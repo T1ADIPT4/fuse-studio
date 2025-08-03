@@ -6,8 +6,9 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-            - ชื่อ: อัปโหลดสิ่งประดิษฐ์สร้าง
-  การใช้ประโยชน์: การกระทํา/upload-artifact@v4.6.2
+   - ชื่อ: อัปโหลดสิ่งประดิษฐ์สร้าง
+  การใช้ประโยชน์: upload-artifact@v4.6.2
+  
   กับ:
     # ชื่อสิ่งประดิษฐ์
     ชื่อ: # ไม่จําเป็น ค่าเริ่มต้นคือสิ่งประดิษฐ์
