@@ -1,0 +1,63 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+            - ชื่อ: อัปโหลดสิ่งประดิษฐ์สร้าง
+  การใช้ประโยชน์: การกระทํา/upload-artifact@v4.6.2
+  กับ:
+    # ชื่อสิ่งประดิษฐ์
+    ชื่อ: # ไม่จําเป็น ค่าเริ่มต้นคือสิ่งประดิษฐ์
+    # รูปแบบไฟล์ไดเรกทอรีหรือไวด์การ์ดที่อธิบายสิ่งที่ต้องอัปโหลด
+    เส้นทาง: 
+    # พฤติกรรมที่ต้องการถ้าไม่พบไฟล์โดยใช้เส้นทางที่ให้มา
+ตัวเลือกที่มี:
+  คําเตือน: ส่งคําเตือนแต่อย่าล้มเหลวในการดําเนินการ
+  ข้อผิดพลาด: ล้มเหลวในการดําเนินการด้วยข้อความแสดงข้อผิดพลาด
+  ละเว้น: อย่าส่งออกคําเตือนหรือข้อผิดพลาดใด ๆ การดําเนินการจะไม่ล้มเหลว
+
+    หากไม่พบไฟล์: # ไม่จําเป็น ค่าเริ่มต้นคือการเตือน
+    # ระยะเวลาหลังจากที่สิ่งประดิษฐ์จะหมดอายุในวัน 0 หมายถึงการใช้การเก็บรักษาเริ่มต้น
+ขั้นต่ํา 1 วัน สูงสุด 90 วัน เว้นแต่มีการเปลี่ยนแปลงจากหน้าการตั้งค่าพื้นที่เก็บข้อมูล
+
+    วันเก็บรักษา: # ไม่จําเป็น
+    # ระดับการบีบอัดสําหรับ Zlib ที่จะนําไปใช้กับไฟล์เก็บถาวรสิ่งประดิษฐ์ ค่าสามารถอยู่ในช่วงตั้งแต่ 0 ถึง 9: - 0: ไม่มีการบีบอัด - 1: ความเร็วที่ดีที่สุด - 6: การบีบอัดเริ่มต้น (เช่นเดียวกับ GNU Gzip) - 9: การบีบอัดที่ดีที่สุด ระดับที่สูงขึ้นจะส่งผลให้การบีบอัดดีขึ้น แต่จะใช้เวลานานกว่าจึงจะเสร็จสมบูรณ์ สําหรับไฟล์ขนาดใหญ่ที่ไม่สามารถบีบอัดได้ง่าย แนะนําให้ใช้ค่า 0 เพื่อการอัปโหลดที่เร็วขึ้นอย่างมาก
+
+    ระดับการบีบอัด: # ไม่จําเป็น ค่าเริ่มต้นคือ 6
+    # หากเป็นจริงสิ่งประดิษฐ์ที่มีชื่อตรงกันจะถูกลบก่อนที่จะอัปโหลดใหม่ หากเป็นเท็จ การดําเนินการจะล้มเหลวหากมีสิ่งประดิษฐ์สําหรับชื่อที่กําหนดอยู่แล้ว ไม่ล้มเหลวหากไม่มีสิ่งประดิษฐ์
+
+    เขียนทับ: # ไม่จําเป็น ค่าเริ่มต้นเป็นเท็จ
+    # หากเป็นจริงไฟล์ที่ซ่อนอยู่จะรวมอยู่ในสิ่งประดิษฐ์ หากเป็นเท็จ ไฟล์ที่ซ่อนอยู่จะถูกแยกออกจากสิ่งประดิษฐ์
+
+    รวมไฟล์ที่ซ่อนอยู่: # ไม่จําเป็น ค่าเริ่มต้นเป็นเท็จ
+          
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+
+    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
+    - name: Update dependency graph
+      uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
